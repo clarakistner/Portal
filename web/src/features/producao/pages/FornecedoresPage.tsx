@@ -1,47 +1,37 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-type SituacaoCliente =
-  | 'ativo'
-  | 'inativo'
-  | 'bloqueado'
-  | 'prospect'
-  | 'em_analise'
+type SituacaoFornecedor = 'ativo' | 'inativo'
 
-interface Cliente {
+interface Fornecedor {
   id: string
   codigo: string
-  razaoSocial: string
-  nomeFantasia: string
-  cidade: string
-  uf: string
-  situacao: SituacaoCliente
+  nome: string
+  telefone: string
+  situacao: SituacaoFornecedor
 }
 
-const SITUACAO_CONFIG: Record<SituacaoCliente, { label: string; color: string; bg: string; dot: string }> = {
-  ativo:      { label: 'Ativo',       color: '#166534', bg: '#DCFCE7', dot: '#22C55E' },
-  inativo:    { label: 'Inativo',     color: '#1C1917', bg: '#E7E5E4', dot: '#78716C' },
-  bloqueado:  { label: 'Bloqueado',   color: '#7F1D1D', bg: '#FEE2E2', dot: '#EF4444' },
-  prospect:   { label: 'Prospect',    color: '#4C1D95', bg: '#EDE9FE', dot: '#8B5CF6' },
-  em_analise: { label: 'Em Análise',  color: '#78350F', bg: '#FEF3C7', dot: '#F59E0B' },
+const SITUACAO_CONFIG: Record<SituacaoFornecedor, { label: string; color: string; bg: string; dot: string }> = {
+  ativo:   { label: 'Ativo',   color: '#166534', bg: '#DCFCE7', dot: '#22C55E' },
+  inativo: { label: 'Inativo', color: '#1C1917', bg: '#E7E5E4', dot: '#78716C' },
 }
 
-const CLIENTES_MOCK: Cliente[] = [
-  { id: '1',  codigo: '000001', razaoSocial: 'Empresa Alpha Ltda',         nomeFantasia: 'Alpha',       cidade: 'São Paulo',       uf: 'SP', situacao: 'ativo' },
-  { id: '2',  codigo: '000002', razaoSocial: 'Beta Comércio S/A',          nomeFantasia: 'Beta',        cidade: 'Rio de Janeiro',  uf: 'RJ', situacao: 'ativo' },
-  { id: '3',  codigo: '000003', razaoSocial: 'Gama Indústria ME',          nomeFantasia: 'Gama Ind.',   cidade: 'Curitiba',        uf: 'PR', situacao: 'bloqueado' },
-  { id: '4',  codigo: '000004', razaoSocial: 'Delta Serviços Ltda',        nomeFantasia: 'Delta',       cidade: 'Belo Horizonte',  uf: 'MG', situacao: 'em_analise' },
-  { id: '5',  codigo: '000005', razaoSocial: 'Epsilon Tech S/A',           nomeFantasia: 'Epsilon',     cidade: 'Porto Alegre',    uf: 'RS', situacao: 'ativo' },
-  { id: '6',  codigo: '000006', razaoSocial: 'Zeta Logística ME',          nomeFantasia: 'Zeta Log.',   cidade: 'Salvador',        uf: 'BA', situacao: 'inativo' },
-  { id: '7',  codigo: '000007', razaoSocial: 'Eta Construções Ltda',       nomeFantasia: 'Eta Obras',   cidade: 'Fortaleza',       uf: 'CE', situacao: 'prospect' },
-  { id: '8',  codigo: '000008', razaoSocial: 'Theta Alimentos S/A',        nomeFantasia: 'Theta',       cidade: 'Recife',          uf: 'PE', situacao: 'ativo' },
-  { id: '9',  codigo: '000009', razaoSocial: 'Iota Varejo Ltda',           nomeFantasia: 'Iota',        cidade: 'Manaus',          uf: 'AM', situacao: 'ativo' },
-  { id: '10', codigo: '000010', razaoSocial: 'Kappa Atacado S/A',          nomeFantasia: 'Kappa',       cidade: 'Brasília',        uf: 'DF', situacao: 'em_analise' },
-  { id: '11', codigo: '000011', razaoSocial: 'Lambda Distribuidora Ltda',  nomeFantasia: 'Lambda',      cidade: 'Goiânia',         uf: 'GO', situacao: 'ativo' },
-  { id: '12', codigo: '000012', razaoSocial: 'Mu Exportações ME',          nomeFantasia: 'Mu Export.',  cidade: 'Florianópolis',   uf: 'SC', situacao: 'inativo' },
+const FORNECEDORES_MOCK: Fornecedor[] = [
+  { id: '1',  codigo: '000001', nome: 'Aço Brasil Distribuidora Ltda',   telefone: '(11) 3456-7890', situacao: 'ativo' },
+  { id: '2',  codigo: '000002', nome: 'Metalúrgica São Paulo S/A',        telefone: '(11) 2345-6789', situacao: 'ativo' },
+  { id: '3',  codigo: '000003', nome: 'Químicos do Sul ME',               telefone: '(51) 3456-7891', situacao: 'ativo' },
+  { id: '4',  codigo: '000004', nome: 'Embalagens Curitiba Ltda',         telefone: '(41) 3456-7892', situacao: 'inativo' },
+  { id: '5',  codigo: '000005', nome: 'Elétrica Industrial S/A',          telefone: '(21) 3456-7893', situacao: 'ativo' },
+  { id: '6',  codigo: '000006', nome: 'Rolamentos e Fixadores ME',        telefone: '(31) 3456-7894', situacao: 'ativo' },
+  { id: '7',  codigo: '000007', nome: 'Alumínio Norte Distribuidora',     telefone: '(92) 3456-7895', situacao: 'ativo' },
+  { id: '8',  codigo: '000008', nome: 'Vedações Técnicas Ltda',           telefone: '(81) 3456-7896', situacao: 'inativo' },
+  { id: '9',  codigo: '000009', nome: 'Tintas e Revestimentos S/A',       telefone: '(85) 3456-7897', situacao: 'ativo' },
+  { id: '10', codigo: '000010', nome: 'Polímeros do Centro-Oeste ME',     telefone: '(62) 3456-7898', situacao: 'ativo' },
+  { id: '11', codigo: '000011', nome: 'Ferramentas Industriais Ltda',     telefone: '(48) 3456-7899', situacao: 'ativo' },
+  { id: '12', codigo: '000012', nome: 'Logística e Transporte S/A',       telefone: '(71) 3456-7800', situacao: 'inativo' },
 ]
 
-function SituacaoBadge({ situacao }: { situacao: SituacaoCliente }) {
+function SituacaoBadge({ situacao }: { situacao: SituacaoFornecedor }) {
   const cfg = SITUACAO_CONFIG[situacao]
   return (
     <span style={{
@@ -56,24 +46,24 @@ function SituacaoBadge({ situacao }: { situacao: SituacaoCliente }) {
   )
 }
 
-export function ClientesPage() {
+export function FornecedoresPage() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
-  const [situacaoFiltro, setSituacaoFiltro] = useState<SituacaoCliente | 'todos'>('todos')
+  const [situacaoFiltro, setSituacaoFiltro] = useState<SituacaoFornecedor | 'todos'>('todos')
 
-  const clientesFiltrados = CLIENTES_MOCK.filter(c => {
+  const fornecedoresFiltrados = FORNECEDORES_MOCK.filter(f => {
     const matchSearch =
-      c.codigo.includes(search) ||
-      c.razaoSocial.toLowerCase().includes(search.toLowerCase()) ||
-      c.nomeFantasia.toLowerCase().includes(search.toLowerCase())
-    const matchSituacao = situacaoFiltro === 'todos' || c.situacao === situacaoFiltro
+      f.codigo.includes(search) ||
+      f.nome.toLowerCase().includes(search.toLowerCase()) ||
+      f.telefone.includes(search)
+    const matchSituacao = situacaoFiltro === 'todos' || f.situacao === situacaoFiltro
     return matchSearch && matchSituacao
   })
 
   return (
     <>
       <style>{`
-        .clientes-search {
+        .fornecedores-search {
           padding: 9px 14px 9px 34px;
           border: 1.5px solid var(--color-border);
           border-radius: 8px; font-size: 14px; outline: none;
@@ -82,19 +72,19 @@ export function ClientesPage() {
           transition: border-color 0.15s, box-shadow 0.15s;
           width: 100%;
         }
-        .clientes-search::placeholder { color: var(--color-text-secondary); }
-        .clientes-search:focus {
+        .fornecedores-search::placeholder { color: var(--color-text-secondary); }
+        .fornecedores-search:focus {
           border-color: #16A34A;
           box-shadow: 0 0 0 3px rgba(22,163,74,0.10);
         }
-        .clientes-select {
+        .fornecedores-select {
           padding: 9px 14px; border: 1.5px solid var(--color-border);
           border-radius: 8px; font-size: 14px; outline: none;
           font-family: var(--font-body); background: white;
           color: var(--color-text); cursor: pointer;
           transition: border-color 0.15s; white-space: nowrap;
         }
-        .clientes-select:focus { border-color: #16A34A; }
+        .fornecedores-select:focus { border-color: #16A34A; }
         .btn-incluir {
           display: flex; align-items: center; gap: 8px;
           padding: 9px 18px;
@@ -106,8 +96,8 @@ export function ClientesPage() {
         }
         .btn-incluir:hover { transform: scale(1.03); box-shadow: 0 4px 14px rgba(22,163,74,0.35); }
         .btn-incluir:active { transform: scale(0.98); }
-        .table-row-cliente { transition: background 0.12s; cursor: pointer; }
-        .table-row-cliente:hover { background: #F0FDF4; }
+        .table-row-fornecedor { transition: background 0.12s; cursor: pointer; }
+        .table-row-fornecedor:hover { background: #F0FDF4; }
         .btn-acao {
           padding: 5px 12px; border-radius: 6px;
           border: 1.5px solid var(--color-border);
@@ -124,14 +114,12 @@ export function ClientesPage() {
         overflow: 'hidden',
       }}>
 
-        {/* Cabeçalho fixo da página */}
         <div style={{ padding: '16px 28px 16px', flexShrink: 0 }}>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700 }}>
-            Clientes
+            Fornecedores
           </h1>
         </div>
 
-        {/* Card com toolbar fixa + tabela com scroll */}
         <div style={{
           margin: '0 28px 28px',
           background: 'white', borderRadius: 14,
@@ -156,17 +144,17 @@ export function ClientesPage() {
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
               <input
-                className="clientes-search"
-                placeholder="Buscar por código, razão social ou fantasia..."
+                className="fornecedores-search"
+                placeholder="Buscar por código, nome ou telefone..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
             </div>
 
             <select
-              className="clientes-select"
+              className="fornecedores-select"
               value={situacaoFiltro}
-              onChange={e => setSituacaoFiltro(e.target.value as SituacaoCliente | 'todos')}
+              onChange={e => setSituacaoFiltro(e.target.value as SituacaoFornecedor | 'todos')}
             >
               <option value="todos">Todas as situações</option>
               {Object.entries(SITUACAO_CONFIG).map(([key, cfg]) => (
@@ -174,7 +162,7 @@ export function ClientesPage() {
               ))}
             </select>
 
-            <button className="btn-incluir" onClick={() => navigate('/cadastros/clientes/novo')}>
+            <button className="btn-incluir" onClick={() => navigate('/cadastros/fornecedores/novo')}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
               </svg>
@@ -186,15 +174,14 @@ export function ClientesPage() {
           <div style={{ flexShrink: 0, borderBottom: '1px solid var(--color-border)', background: '#FAFAFA' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
               <colgroup>
-                <col style={{ width: '11%' }} />
-                <col style={{ width: '30%' }} />
-                <col style={{ width: '21%' }} />
-                <col style={{ width: '20%' }} />
-                <col style={{ width: '18%' }} />
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '50%' }} />
+                <col style={{ width: '22%' }} />
+                <col style={{ width: '16%' }} />
               </colgroup>
               <thead>
                 <tr>
-                  {['Código', 'Razão Social', 'Nome Fantasia', 'Cidade / UF', ''].map(col => (
+                  {['Código', 'Nome', 'Telefone', ''].map(col => (
                     <th key={col} style={{
                       padding: '11px 20px', textAlign: 'left',
                       fontSize: 12, fontWeight: 600,
@@ -213,47 +200,40 @@ export function ClientesPage() {
           <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
               <colgroup>
-                <col style={{ width: '11%' }} />
-                <col style={{ width: '30%' }} />
-                <col style={{ width: '21%' }} />
-                <col style={{ width: '20%' }} />
-                <col style={{ width: '18%' }} />
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '50%' }} />
+                <col style={{ width: '22%' }} />
+                <col style={{ width: '16%' }} />
               </colgroup>
               <tbody>
-                {clientesFiltrados.length === 0 ? (
+                {fornecedoresFiltrados.length === 0 ? (
                   <tr>
-                    <td colSpan={5} style={{ padding: '48px 20px', textAlign: 'center', color: 'var(--color-text-secondary)', fontSize: 14 }}>
-                      Nenhum cliente encontrado.
+                    <td colSpan={4} style={{ padding: '48px 20px', textAlign: 'center', color: 'var(--color-text-secondary)', fontSize: 14 }}>
+                      Nenhum fornecedor encontrado.
                     </td>
                   </tr>
                 ) : (
-                  clientesFiltrados.map((cliente, i) => (
+                  fornecedoresFiltrados.map((fornecedor, i) => (
                     <tr
-                      key={cliente.id}
-                      className="table-row-cliente"
-                      style={{ borderBottom: i < clientesFiltrados.length - 1 ? '1px solid var(--color-border)' : 'none' }}
-                      onClick={() => navigate(`/cadastros/clientes/${cliente.id}`)}
+                      key={fornecedor.id}
+                      className="table-row-fornecedor"
+                      style={{ borderBottom: i < fornecedoresFiltrados.length - 1 ? '1px solid var(--color-border)' : 'none' }}
+                      onClick={() => navigate(`/cadastros/fornecedores/${fornecedor.id}`)}
                     >
                       <td style={{ padding: '14px 20px' }}>
                         <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 14, color: '#15803D' }}>
-                          {cliente.codigo}
+                          {fornecedor.codigo}
                         </span>
                       </td>
                       <td style={{ padding: '14px 20px', fontSize: 14, color: 'var(--color-text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {cliente.razaoSocial}
-                      </td>
-                      <td style={{ padding: '14px 20px', fontSize: 14, color: 'var(--color-text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {cliente.nomeFantasia}
+                        {fornecedor.nome}
                       </td>
                       <td style={{ padding: '14px 20px', fontSize: 14, color: 'var(--color-text-secondary)', whiteSpace: 'nowrap' }}>
-                        {cliente.cidade}{' '}
-                        <span style={{ marginLeft: 4, fontSize: 11, fontWeight: 600, color: '#15803D', background: '#DCFCE7', borderRadius: 4, padding: '1px 5px' }}>
-                          {cliente.uf}
-                        </span>
+                        {fornecedor.telefone}
                       </td>
                       <td style={{ padding: '14px 20px' }} onClick={e => e.stopPropagation()}>
                         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                          <button className="btn-acao" onClick={() => navigate(`/cadastros/clientes/${cliente.id}/editar`)}>
+                          <button className="btn-acao" onClick={() => navigate(`/cadastros/fornecedores/${fornecedor.id}/editar`)}>
                             Editar
                           </button>
                         </div>
@@ -273,7 +253,7 @@ export function ClientesPage() {
             background: '#FAFAFA',
           }}>
             <span style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-              {clientesFiltrados.length} cliente{clientesFiltrados.length !== 1 ? 's' : ''} encontrado{clientesFiltrados.length !== 1 ? 's' : ''}
+              {fornecedoresFiltrados.length} fornecedor{fornecedoresFiltrados.length !== 1 ? 'es' : ''} encontrado{fornecedoresFiltrados.length !== 1 ? 's' : ''}
             </span>
             <span style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
               Dados mockados — integração Protheus pendente

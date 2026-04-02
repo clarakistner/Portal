@@ -126,18 +126,16 @@ export function PedidosVendaPage() {
 
       <div style={{
         display: 'flex', flexDirection: 'column',
-        height: 'calc(100vh - 56px)',  /* desconta o header fixo do layout */
+        height: 'calc(100vh - 56px)',
         overflow: 'hidden',
       }}>
 
-        {/* ── Cabeçalho fixo da página ── */}
         <div style={{ padding: '16px 28px 16px', flexShrink: 0 }}>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700 }}>
             Pedidos de Venda
           </h1>
         </div>
 
-        {/* ── Card com toolbar fixa + tabela com scroll ── */}
         <div style={{
           margin: '0 28px 28px',
           background: 'white', borderRadius: 14,
@@ -149,7 +147,6 @@ export function PedidosVendaPage() {
           minHeight: 0,
         }}>
 
-          {/* Toolbar fixa */}
           <div style={{
             padding: '14px 20px',
             borderBottom: '1px solid var(--color-border)',
@@ -188,15 +185,14 @@ export function PedidosVendaPage() {
             </button>
           </div>
 
-          {/* Cabeçalho da tabela fixo */}
           <div style={{ flexShrink: 0, borderBottom: '1px solid var(--color-border)', background: '#FAFAFA' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
               <colgroup>
                 <col style={{ width: '13%' }} />
-                <col style={{ width: '35%' }} />
-                <col style={{ width: '18%' }} />
+                <col style={{ width: '37%' }} />
                 <col style={{ width: '20%' }} />
-                <col style={{ width: '14%' }} />
+                <col style={{ width: '22%' }} />
+                <col style={{ width: '8%' }} />
               </colgroup>
               <thead>
                 <tr>
@@ -215,15 +211,14 @@ export function PedidosVendaPage() {
             </table>
           </div>
 
-          {/* Corpo da tabela com scroll */}
           <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
               <colgroup>
                 <col style={{ width: '13%' }} />
-                <col style={{ width: '35%' }} />
-                <col style={{ width: '18%' }} />
+                <col style={{ width: '37%' }} />
                 <col style={{ width: '20%' }} />
-                <col style={{ width: '14%' }} />
+                <col style={{ width: '22%' }} />
+                <col style={{ width: '8%' }} />
               </colgroup>
               <tbody>
                 {pedidosFiltrados.length === 0 ? (
@@ -255,10 +250,7 @@ export function PedidosVendaPage() {
                         <StatusBadge status={pedido.status} />
                       </td>
                       <td style={{ padding: '14px 20px' }} onClick={e => e.stopPropagation()}>
-                        <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
-                          <button className="btn-acao" onClick={() => navigate(`/faturamento/pedidos/${pedido.id}`)}>
-                            Visualizar
-                          </button>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                           <button className="btn-acao" onClick={() => navigate(`/faturamento/pedidos/${pedido.id}/editar`)}>
                             Editar
                           </button>
@@ -271,7 +263,6 @@ export function PedidosVendaPage() {
             </table>
           </div>
 
-          {/* Rodapé fixo */}
           <div style={{
             padding: '11px 20px', flexShrink: 0,
             borderTop: '1px solid var(--color-border)',

@@ -5,6 +5,10 @@ import { DashboardPage } from '../../features/dashboard/pages/DashboardPage'
 import { PedidosVendaPage } from '../../features/faturamento/pages/PedidosdevendaPage'
 import { ClientesPage } from '../../features/faturamento/pages/ClientesPage'
 import { ProdutosPage } from '../../features/faturamento/pages/ProdutosPage'
+import { FornecedoresPage } from '../../features/producao/pages/FornecedoresPage'
+import { CondicoesPagamentoPage } from '../../features/faturamento/pages/CondPagamentoPage'
+import { ContasReceberPage } from '../../features/financeiro/pages/ContasReceberPage'
+import { ContasPagarPage } from '../../features/financeiro/pages/ContasPagar'
 
 const NAV_ITEMS = [
   {
@@ -300,31 +304,38 @@ export function Layout({ sidebarAnimating }: { sidebarAnimating?: boolean }) {
             <div style={{ flex: 1 }} />
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <span style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>{today}</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div style={{
-                  width: 32, height: 32, borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #16A34A, #15803D)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 13, fontWeight: 700, color: 'white', flexShrink: 0,
-                }}>
-                  {user?.nome?.charAt(0).toUpperCase() ?? 'U'}
-                </div>
-                <div style={{ lineHeight: 1.3 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text)' }}>
-                    {user?.nome ?? 'Usuário'}
-                  </div>
-                  <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
-                    {user?.perfil ?? 'Administrador'}
-                  </div>
-                </div>
-              </div>
-            </div>
+  <span style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>{today}</span>
+
+  <div style={{ width: 1, height: 24, background: 'var(--color-border)' }} />
+
+  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ lineHeight: 1.3, textAlign: 'right' }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text)' }}>
+            {user?.nome ?? 'Usuário'}
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
+            {user?.perfil ?? 'Administrador'}
+          </div>
+        </div>
+
+        <div style={{ width: 1, height: 24, background: 'var(--color-border)' }} />
+
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontWeight: 700,
+          fontSize: 14,
+          color: '#15803D',
+          whiteSpace: 'nowrap',
+        }}>
+          {user?.empresa ?? 'Nambor'}
+        </span>
+      </div>
+    </div>
           </header>
 
           <main style={{ flex: 1, padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/" element={<Navigate to="/login" replace />} />
               <Route path="/dashboard" element={<DashboardPage />} />
 
               <Route path="/faturamento/pedidos" element={<PedidosVendaPage />} />
@@ -343,11 +354,35 @@ export function Layout({ sidebarAnimating }: { sidebarAnimating?: boolean }) {
             <Route path="/faturamento/produtos/:id/editar" element={<PlaceholderPage group="Faturamento" title="Editar Produto" />} />
 
               <Route path="/faturamento/transportadoras" element={<PlaceholderPage group="Faturamento" title="Transportadoras" />} />
-              <Route path="/faturamento/condicoes-pagamento" element={<PlaceholderPage group="Faturamento" title="Condições de Pagamento" />} />
-              <Route path="/financeiro/contas-pagar" element={<PlaceholderPage group="Financeiro" title="Contas a Pagar" />} />
-              <Route path="/financeiro/contas-receber" element={<PlaceholderPage group="Financeiro" title="Contas a Receber" />} />
-              <Route path="/producao/produtos" element={<PlaceholderPage group="Produção" title="Produtos" />} />
-              <Route path="/producao/fornecedores" element={<PlaceholderPage group="Produção" title="Fornecedores" />} />
+
+              <Route path="/faturamento/condicoes-pagamento" element={<CondicoesPagamentoPage />} />
+              <Route path="/faturamento/condicoes-pagamento/novo" element={<PlaceholderPage group="Faturamento" title="Nova Condição de Pagamento" />} />
+              <Route path="/faturamento/condicoes-pagamento/:id" element={<PlaceholderPage group="Faturamento" title="Condição de Pagamento" />} />
+              <Route path="/faturamento/condicoes-pagamento/:id/editar" element={<PlaceholderPage group="Faturamento" title="Editar Condição de Pagamento" />} />
+
+
+              <Route path="/financeiro/contas-pagar" element={<ContasPagarPage />} />
+              <Route path="/financeiro/contas-pagar/novo" element={<PlaceholderPage group="Financeiro" title="Nova Conta a Pagar" />} />
+              <Route path="/financeiro/contas-pagar/:id" element={<PlaceholderPage group="Financeiro" title="Conta a Pagar" />} />
+              <Route path="/financeiro/contas-pagar/:id/editar" element={<PlaceholderPage group="Financeiro" title="Editar Conta a Pagar" />} />
+
+             
+              <Route path="/financeiro/contas-receber" element={<ContasReceberPage />} />
+              <Route path="/financeiro/contas-receber/novo" element={<PlaceholderPage group="Financeiro" title="Nova Conta a Receber" />} />
+              <Route path="/financeiro/contas-receber/:id" element={<PlaceholderPage group="Financeiro" title="Conta a Receber" />} />
+              <Route path="/financeiro/contas-receber/:id/editar" element={<PlaceholderPage group="Financeiro" title="Editar Conta a Receber" />} />
+
+             
+            <Route path="/producao/produtos" element={<ProdutosPage />} />
+            <Route path="/producao/produtos/novo" element={<PlaceholderPage group="Produção" title="Novo Produto" />} />
+            <Route path="/producao/produtos/:id" element={<PlaceholderPage group="Produção" title="Produto" />} />
+            <Route path="/producao/produtos/:id/editar" element={<PlaceholderPage group="Produção" title="Editar Produto" />} />
+
+                <Route path="/producao/fornecedores" element={<FornecedoresPage />} />
+              <Route path="/producao/fornecedores/novo" element={<PlaceholderPage group="Produção" title="Novo Fornecedor" />} />
+            <Route path="/producao/fornecedores/:id" element={<PlaceholderPage group="Produção" title="Fornecedor" />} />
+            <Route path="/producao/fornecedores/:id/editar" element={<PlaceholderPage group="Produção" title="Editar Fornecedor" />} />
+
               <Route path="/producao/estoque" element={<PlaceholderPage group="Produção" title="Estoque" />} />
               <Route path="/configuracoes" element={<PlaceholderPage title="Configurações" />} />
             </Routes>

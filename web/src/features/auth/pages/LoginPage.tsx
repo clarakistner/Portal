@@ -53,9 +53,10 @@ export function LoginPage({ onSuccess, phase }: LoginPageProps) {
           cursor: pointer; transition: transform 0.18s ease, box-shadow 0.18s ease;
           box-shadow: 0 2px 8px rgba(22,163,74,0.25); letter-spacing: 0.01em;
         }
-        .login-btn:hover {
+        .login-btn:hover, .login-btn:focus {
           transform: scale(1.025);
           box-shadow: 0 6px 20px rgba(22,163,74,0.35);
+          outline: none;
         }
         .login-btn:active { transform: scale(0.99); }
         .eye-btn {

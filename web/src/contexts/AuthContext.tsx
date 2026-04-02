@@ -6,6 +6,7 @@ export interface User {
   login: string
   email: string
   perfil: string
+  empresa: string
 }
 
 export interface AuthContextData {

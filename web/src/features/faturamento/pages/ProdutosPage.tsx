@@ -220,17 +220,16 @@ export function ProdutosPage() {
           <div style={{ flexShrink: 0, borderBottom: '1px solid var(--color-border)', background: '#FAFAFA' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
               <colgroup>
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '30%' }} />
+                <col style={{ width: '8%' }} />
+                <col style={{ width: '20%' }} />
+                <col style={{ width: '20%' }} />
                 <col style={{ width: '10%' }} />
-                <col style={{ width: '26%' }} />
-                <col style={{ width: '7%' }} />
-                <col style={{ width: '15%' }} />
-                <col style={{ width: '16%' }} />
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '16%' }} />
               </colgroup>
               <thead>
                 <tr>
-                  {['Código', 'Descrição', 'UN', 'Grupo / Família', 'Tipo', 'Preço', ''].map(col => (
+                  {['Código', 'Descrição', 'UN', 'Grupo / Família', 'Tipo', ''].map(col => (
                     <th key={col} style={{
                       padding: '11px 20px', textAlign: 'left',
                       fontSize: 12, fontWeight: 600,
@@ -249,18 +248,17 @@ export function ProdutosPage() {
           <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
               <colgroup>
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '30%' }} />
+                <col style={{ width: '8%' }} />
+                <col style={{ width: '20%' }} />
+                <col style={{ width: '20%' }} />
                 <col style={{ width: '10%' }} />
-                <col style={{ width: '26%' }} />
-                <col style={{ width: '7%' }} />
-                <col style={{ width: '15%' }} />
-                <col style={{ width: '16%' }} />
-                <col style={{ width: '10%' }} />
-                <col style={{ width: '16%' }} />
               </colgroup>
               <tbody>
                 {produtosFiltrados.length === 0 ? (
                   <tr>
-                    <td colSpan={7} style={{ padding: '48px 20px', textAlign: 'center', color: 'var(--color-text-secondary)', fontSize: 14 }}>
+                    <td colSpan={6} style={{ padding: '48px 20px', textAlign: 'center', color: 'var(--color-text-secondary)', fontSize: 14 }}>
                       Nenhum produto encontrado.
                     </td>
                   </tr>
@@ -289,14 +287,8 @@ export function ProdutosPage() {
                       <td style={{ padding: '14px 20px' }}>
                         <TipoBadge tipo={produto.tipo} />
                       </td>
-                      <td style={{ padding: '14px 20px', fontSize: 14, color: 'var(--color-text)', whiteSpace: 'nowrap', fontVariantNumeric: 'tabular-nums' }}>
-                        {formatPreco(produto.preco)}
-                      </td>
                       <td style={{ padding: '14px 20px' }} onClick={e => e.stopPropagation()}>
-                        <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
-                          <button className="btn-acao" onClick={() => navigate(`/cadastros/produtos/${produto.id}`)}>
-                            Visualizar
-                          </button>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                           <button className="btn-acao" onClick={() => navigate(`/cadastros/produtos/${produto.id}/editar`)}>
                             Editar
                           </button>
